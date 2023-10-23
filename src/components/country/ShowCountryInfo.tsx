@@ -1,6 +1,6 @@
 'use client'
 
-import { Fragment, useEffect } from 'react'
+import { Fragment } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import useSWR from 'swr'
 import { Image } from '@nextui-org/react'
@@ -35,7 +35,11 @@ export const ShowCountryInfo = () => {
         if (!country.languages || !country.name.nativeName) return country.name.common
         const languages = Object.keys(country.languages)
         const nativeLanguage = languages.length > 1 ? languages[languages.length - 1] : languages[0]
-        return country.name.nativeName[nativeLanguage].common
+
+        const listNativeName = Object.keys(country.name.nativeName) 
+        const langIsValid = listNativeName.indexOf(nativeLanguage)
+
+        return langIsValid !== -1 ? country.name.nativeName[nativeLanguage].common : country.name.nativeName[listNativeName[0]].common 
     }
 
     const getCurrencies = (currencies: Currencies) => {
